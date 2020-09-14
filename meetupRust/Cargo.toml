@@ -1,0 +1,44 @@
+[package]
+name = "meetupRust"
+version = "0.1.0"
+authors = ["aafanasyev <alexey.afanasyev@dataart.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[profile.release]
+opt-level = 3
+debug = false
+debug-assertions = false
+overflow-checks = false
+lto = false
+panic = 'unwind'
+incremental = false
+codegen-units = 16
+rpath = false
+
+[[bin]]
+name = "ownership"
+path = "src/ownership.rs"
+
+[[bin]]
+name = "ownership1"
+path = "src/ownership1.rs"
+
+[[bin]]
+name = "oop"
+path = "src/oop.rs"
+
+[[bin]]
+name = "race"
+path = "src/race.rs"
+
+[[bin]]
+name = "sort"
+path = "src/sort.rs"
+
+[[bin]]
+name = "bench"
+path = "src/bench.rs"
+
+[dependencies]
