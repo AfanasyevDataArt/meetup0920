@@ -7,10 +7,26 @@ use std::{
 };
 use std::cmp::Ordering;
 
-const SIZE : usize = 128;
+const SIZE : usize = 256;
 
 struct LineBuf{
-    buf: [u8; SIZE]
+    buf: [char; SIZE]
+}
+
+impl Default for LineBuf{
+    fn default() -> LineBuf {
+        LineBuf {
+            buf: ['\0'; SIZE]
+        }
+    }
+}
+
+impl Clone for LineBuf {
+    fn clone(&self) -> Self {
+        LineBuf {
+            buf: self.buf.clone()
+        }
+    }
 }
 
 fn lines_from_file(filename: impl AsRef<Path>) -> (Vec<String>, Vec<LineBuf>) {
@@ -28,7 +44,14 @@ fn lines_from_file(filename: impl AsRef<Path>) -> (Vec<String>, Vec<LineBuf>) {
             let sub_line = &line[idx*SIZE .. (idx+1)*SIZE].to_string();
 
             str_vec.push(sub_line.clone());
+            let mut buf_line : LineBuf = LineBuf {buf: ['\0'; SIZE]};
+            let mut pos = 0;
+            for elem in sub_line.chars(){
+                buf_line.buf[pos] = elem;
+                pos += 1;
+            }
 
+            buf_vec.push(buf_line.clone());
         }
     }
 
@@ -48,7 +71,7 @@ fn main() {
 
     println!("Vec<u8[{}]> Read: {} lines", SIZE, lines_buf.len());
     let now_buf = Instant::now();
-//    lines_buf.sort();
+    lines_buf.sort_by(|a, b| a.buf.cmp(&b.buf));
     let elapsed_buf = now_buf.elapsed().as_millis();
     println!("Sorted: {} ms", elapsed_buf);
 
